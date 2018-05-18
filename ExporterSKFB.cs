@@ -544,7 +544,16 @@ public class ExporterSKFB : EditorWindow {
 				GUI.color = blueColor;
 			else
 				GUI.color = greyColor;
-
+			GUILayout.BeginHorizontal();
+			GUILayout.FlexibleSpace();
+			if (GUILayout.Button ("Save Local", GUILayout.Width(250), GUILayout.Height(40))) {
+				if (System.IO.File.Exists(zipPath))
+				{
+					System.IO.File.Delete(zipPath);
+				}
+				exporter.ExportCoroutine(exportPath, null, true, true, opt_exportAnimation, true);
+				OpenInFileBrowser.Open (Path.GetDirectoryName(exportPath));
+			}
 			if (publisher != null && publisher.getState() == ExporterState.PUBLISH_MODEL && publisher.www != null)
 			{
 				Rect r = EditorGUILayout.BeginVertical();
@@ -555,8 +564,6 @@ public class ExporterSKFB : EditorWindow {
 			else
 			{
 				GUI.enabled = enable;
-				GUILayout.BeginHorizontal();
-				GUILayout.FlexibleSpace();
 				if (GUILayout.Button(status, GUILayout.Width(250), GUILayout.Height(40)))
 				{
 					if (!enable)
